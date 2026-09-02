@@ -3,80 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Regras tributárias: Mercado Livre para Shopee</title>
+<title>Oficina do Seller — Regras tributárias: Mercado Livre para Shopee</title>
 <meta name="description" content="Converta a planilha de regras tributárias do Mercado Livre para o template da Shopee. O arquivo é processado no seu navegador.">
 <style>
   :root{
-    --ink:#16233a; --ink-soft:#4a5769; --ink-faint:#8590a0;
-    --paper:#ffffff; --surface:#f2f5f8; --line:#dce3ec;
-    --accent:#1a6a66; --accent-deep:#12504d;
+    --ink:#33333b; --ink-soft:#6e6e76; --ink-faint:#8b8b93; --ink-ghost:#b9b9bf;
+    --paper:#ffffff; --surface:#f6f5f3; --line:#ececee;
+    --accent:#e8590c; --accent-deep:#c2410c;
     --note-bg:#fbf4e4; --note-ink:#7a5410; --note-line:#e6d3a8;
     --bad-bg:#fdf1f0; --bad-ink:#8f2d24; --bad-line:#eccdc9;
-    --radius:3px;
+    --radius:8px;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
-    margin:0; background:var(--surface); color:var(--ink);
+    margin:0; background:var(--paper); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     font-size:16px; line-height:1.55;
   }
-  .wrap{max-width:660px; margin:0 auto; padding:56px 24px 80px}
-  h1{
-    font-size:1.6rem; line-height:1.25; font-weight:640;
-    letter-spacing:-.017em; margin:0 0 10px;
-  }
-  h1 .arrow{color:var(--ink-faint); font-weight:400}
-  .lede{margin:0 0 6px; color:var(--ink-soft); max-width:52ch}
-  .privacy{margin:0 0 34px; color:var(--ink-faint); font-size:.875rem; max-width:52ch}
 
-  /* O herói é a própria folha de planilha. */
-  .sheet{
-    position:relative; display:block; width:100%; border:0; padding:0;
-    background:var(--paper); border-radius:var(--radius);
-    box-shadow:0 1px 0 var(--line), 0 1px 14px rgba(22,35,58,.06);
-    cursor:pointer; text-align:left; font:inherit; color:inherit;
-    overflow:hidden; transition:box-shadow .18s ease, transform .18s ease;
+  /* ---- navegação ---- */
+  .nav{
+    height:60px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:34px; padding:0 40px;
   }
-  .sheet::before{
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background:
-      linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0/25% 100%,
-      linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 0/100% 34px;
-    opacity:.5;
+  .brand{display:flex; align-items:center; gap:9px}
+  .brand svg{flex:none}
+  .brand b{font-size:17px; font-weight:700; letter-spacing:-.3px}
+  .tabs{display:flex; align-items:center; gap:26px; margin-left:16px; height:100%}
+  .tab{
+    font-size:12.5px; font-weight:600; letter-spacing:.8px; text-transform:uppercase;
+    color:var(--ink); height:100%; display:flex; align-items:center;
+    border-bottom:2px solid var(--accent);
   }
-  .sheet::after{
-    content:""; position:absolute; left:0; right:0; top:0; height:34px;
-    background:var(--surface); border-bottom:1px solid var(--line); pointer-events:none;
+  .tab.soon{color:var(--ink-ghost); font-weight:500; border-bottom:2px solid transparent}
+  .tab.soon small{font-weight:400; letter-spacing:0; text-transform:none; font-size:12.5px; margin-left:5px}
+
+  /* ---- herói ---- */
+  .hero{background:var(--surface); padding:64px 24px 58px; text-align:center}
+  .hero-inner{max-width:760px; margin:0 auto}
+  h1{
+    font-size:2.5rem; line-height:1.15; font-weight:700;
+    letter-spacing:-.8px; margin:0 0 14px;
   }
-  .sheet:hover{box-shadow:0 1px 0 var(--line), 0 3px 20px rgba(22,35,58,.10)}
-  .sheet:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
-  .sheet.drag{box-shadow:0 0 0 2px var(--accent), 0 6px 24px rgba(22,35,58,.12); transform:translateY(-1px)}
-  .sheet.busy{cursor:progress}
-  .sheet-inner{position:relative; z-index:1; padding:74px 28px 52px; text-align:center}
-  .sheet-title{font-weight:600; font-size:1.06rem; margin:0 0 4px}
-  .sheet-hint{margin:0; color:var(--ink-faint); font-size:.875rem}
+  .lede{margin:0 auto 34px; color:var(--ink-soft); font-size:1.0625rem; max-width:640px}
+
+  .dropzone{
+    display:block; width:100%; max-width:640px; margin:0 auto;
+    background:transparent; border:2px dashed transparent; border-radius:12px;
+    padding:10px 10px 16px; cursor:pointer; font:inherit; color:inherit;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .dropzone:hover .cta{background:var(--accent-deep)}
+  .dropzone:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+  .dropzone.drag{border-color:var(--accent); background:#fff}
+  .dropzone.busy{cursor:progress}
+  .cta{
+    display:inline-block; background:var(--accent); color:#fff;
+    font-size:1.1875rem; font-weight:600; padding:22px 54px; border-radius:var(--radius);
+    box-shadow:0 4px 12px rgba(232,89,12,.28); transition:background .15s ease;
+  }
+  .drop-hint{display:block; margin:14px 0 0; font-size:.875rem; color:var(--ink-faint)}
   input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 
-  .bar{height:2px; background:var(--line); border-radius:2px; overflow:hidden; margin:18px 0 0}
+  .privacy{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    margin:26px 0 0; font-size:.8125rem; color:var(--ink-faint);
+  }
+  .privacy svg{flex:none}
+
+  .bar{height:2px; max-width:640px; background:var(--line); border-radius:2px; overflow:hidden; margin:18px auto 0}
   .bar i{display:block; height:100%; width:35%; background:var(--accent); animation:slide 1.1s ease-in-out infinite}
   @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(385%)}}
   @media (prefers-reduced-motion:reduce){.bar i{animation:none;width:100%}}
 
-  .panel{
-    margin:22px 0 0; background:var(--paper); border:1px solid var(--line);
-    border-radius:var(--radius); padding:22px 24px;
+  .error{
+    margin:22px auto 0; max-width:640px; text-align:left;
+    background:var(--bad-bg); border:1px solid var(--bad-line);
+    border-radius:var(--radius); padding:16px 18px; color:var(--bad-ink); font-size:.9375rem;
   }
-  .panel h2{font-size:1.06rem; font-weight:620; margin:0 0 3px}
+  .error p{margin:0}
+
+  .panel{
+    margin:26px auto 0; max-width:640px; text-align:left;
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px 24px; box-shadow:0 2px 10px rgba(51,51,59,.05);
+  }
+  .panel h2{font-size:1.06rem; font-weight:700; margin:0 0 3px}
   .meta{color:var(--ink-faint); font-size:.875rem; margin:0 0 18px}
   .btn{
     display:inline-block; background:var(--accent); color:#fff; border:0;
-    padding:11px 20px; border-radius:var(--radius); font:inherit; font-weight:560;
+    padding:12px 22px; border-radius:var(--radius); font:inherit; font-weight:600;
     cursor:pointer; text-decoration:none;
   }
   .btn:hover{background:var(--accent-deep)}
   .btn:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
-  .btn.quiet{background:transparent; color:var(--accent); padding:11px 0; font-weight:520}
+  .btn.quiet{background:transparent; color:var(--accent); padding:12px 0; font-weight:500; margin-left:14px}
   .btn.quiet:hover{background:transparent; text-decoration:underline}
 
   .note{
@@ -89,92 +111,162 @@
   .note li:last-child{margin:0}
   .note em{font-style:normal; font-weight:600}
 
-  .error{
-    margin:22px 0 0; background:var(--bad-bg); border:1px solid var(--bad-line);
-    border-radius:var(--radius); padding:16px 18px; color:var(--bad-ink); font-size:.9375rem;
+  /* ---- como funciona ---- */
+  .how{padding:58px 40px 62px; text-align:center}
+  .how h2{font-size:1.5rem; font-weight:700; letter-spacing:-.4px; margin:0 0 34px}
+  .steps{
+    display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:48px;
+    max-width:1080px; margin:0 auto; text-align:left;
   }
-  .error p{margin:0}
+  .step p.k{margin:0 0 8px; font-size:.9375rem; font-weight:600; color:var(--accent)}
+  .step h3{margin:0 0 8px; font-size:1.09rem; font-weight:600}
+  .step p.d{margin:0; font-size:.9063rem; line-height:1.6; color:var(--ink-soft)}
+  .step .ph{font-weight:600; color:var(--accent-deep)}
+  .step strong.ph{font-weight:700}
 
-  .foot{margin:44px 0 0; padding-top:22px; border-top:1px solid var(--line)}
-  .foot p{margin:0; color:var(--ink-faint); font-size:.875rem}
-  .linkish{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline}
+  /* ---- rodapé ---- */
+  .foot{border-top:1px solid var(--line); padding:20px 40px 28px}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap}
+  .foot p{margin:0; color:var(--ink-faint); font-size:.8438rem}
+  .foot .fine{color:var(--ink-ghost); font-size:.8125rem}
+  .linkish{background:none;border:0;padding:0;font:inherit;font-size:.8438rem;color:var(--accent);cursor:pointer;text-decoration:underline}
+  a{color:var(--accent)}
 
-  form label{display:block; font-size:.875rem; font-weight:560; margin:14px 0 5px}
-  select,input[type=email],textarea{
+  #report{max-width:560px; margin:18px 0 0}
+  form label{display:block; font-size:.875rem; font-weight:600; margin:14px 0 5px}
+  select,input[type=email],input[type=text],textarea{
     width:100%; font:inherit; color:var(--ink); background:var(--paper);
-    border:1px solid var(--line); border-radius:var(--radius); padding:9px 10px;
+    border:1px solid #d5d5da; border-radius:6px; padding:9px 10px;
   }
   select:focus,input:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent)}
   textarea{resize:vertical; min-height:76px}
   .hp{display:none !important}
   .hidden{display:none}
   .status{margin:14px 0 0; font-size:.9375rem}
+  .report-privacy{margin:14px 0 0; color:var(--ink-faint); font-size:.8438rem}
+
+  /* ---- telas menores ---- */
+  @media (max-width:900px){
+    .nav{height:auto; padding:12px 20px; gap:4px 18px; flex-wrap:wrap}
+    .brand b{white-space:nowrap}
+    .tabs{gap:16px; margin-left:0; height:auto; flex-wrap:wrap}
+    .tab{height:auto; padding:4px 0; white-space:nowrap}
+    .tab.soon small{white-space:nowrap}
+    .hero{padding:44px 20px 44px}
+    h1{font-size:1.75rem; letter-spacing:-.5px}
+    .cta{width:100%; padding:18px 20px; font-size:1.0625rem}
+    .how{padding:44px 20px}
+    .steps{grid-template-columns:1fr; gap:28px}
+    .foot{padding:18px 20px 24px}
+  }
 </style>
 </head>
 <body>
-<main class="wrap">
 
-  <h1>Regras tributárias<br><span class="arrow">Mercado Livre para Shopee</span></h1>
-  <p class="lede">Envie a planilha de regras tributárias exportada do Mercado Livre e baixe a versão pronta para o template da Shopee.</p>
-  <p class="privacy">A conversão acontece dentro do seu navegador. A planilha não é enviada para nenhum servidor e ninguém além de você tem acesso a ela.</p>
+<header class="nav">
+  <div class="brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8590c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+    <b>Oficina do Seller</b>
+  </div>
+  <nav class="tabs" aria-label="Ferramentas">
+    <span class="tab">Conversor tributário</span>
+    <span class="tab soon">Etiquetas <small>· em breve</small></span>
+  </nav>
+</header>
 
-  <button type="button" class="sheet" id="drop" aria-describedby="hint">
-    <span class="sheet-inner">
-      <span class="sheet-title" id="dropTitle">Arraste a planilha do Mercado Livre</span>
-      <span class="sheet-hint" id="hint">ou clique para escolher — arquivo .xlsx</span>
-    </span>
-  </button>
-  <input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-  <div class="bar hidden" id="bar" aria-hidden="true"><i></i></div>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Converter regras tributárias<br>do Mercado Livre para a Shopee</h1>
+      <p class="lede">Insira a planilha do Mercado Livre e converta ela para o modelo do Full Shopee.</p>
 
-  <div class="error hidden" id="err" role="alert"><p id="errMsg"></p></div>
+      <button type="button" class="dropzone" id="drop" aria-describedby="hint">
+        <span class="cta"><span id="dropTitle">Selecionar planilha do Mercado Livre</span></span>
+        <span class="drop-hint" id="hint">ou solte o arquivo .xlsx aqui</span>
+      </button>
+      <input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+      <div class="bar hidden" id="bar" aria-hidden="true"><i></i></div>
 
-  <section class="panel hidden" id="done" aria-live="polite">
-    <h2>Planilha convertida</h2>
-    <p class="meta" id="doneMeta"></p>
-    <a class="btn" id="dl" href="#" download>Baixar planilha</a>
+      <p class="privacy">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        Convertida no seu navegador.
+      </p>
 
-    <div class="note">
-      <p>Preencha na planilha antes de importar</p>
-      <ul>
-        <li><em>Origem Fiscal</em> — uma por regra, escolhendo no menu da célula: SP, PE, MG, GO, BA ou RS.</li>
-        <li><em>CFOP Mesmo Estado</em> e <em>CFOP Estados diferentes</em> — nas linhas de Venda, onde está escrito PREENCHER.</li>
-        <li>Valide a planilha com a sua contabilidade antes de subir na Central do Vendedor.</li>
-      </ul>
+      <div class="error hidden" id="err" role="alert"><p id="errMsg"></p></div>
+
+      <section class="panel hidden" id="done" aria-live="polite">
+        <h2>Planilha convertida</h2>
+        <a class="btn" id="dl" href="#" download>Baixar planilha</a>
+
+        <div class="note">
+          <p>Preencha na planilha antes de importar</p>
+          <ul>
+            <li><em>Origem Fiscal</em> — uma por regra, escolhendo no menu da célula: SP, PE, MG, GO, BA ou RS.</li>
+            <li><em>CFOP Mesmo Estado</em> e <em>CFOP Estados diferentes</em> — nas linhas de Venda, onde está escrito PREENCHER.</li>
+            <li>Valide a planilha com a sua contabilidade antes de subir na Central do Vendedor.</li>
+          </ul>
+        </div>
+      </section>
     </div>
   </section>
 
-  <div class="foot">
+  <section class="how">
+    <h2>Como converter as regras tributárias</h2>
+    <div class="steps">
+      <div class="step">
+        <p class="k">Passo 1</p>
+        <h3>Exporte a planilha no Mercado Livre</h3>
+        <p class="d">Acesse o portal do Mercado Livre: <strong class="ph">Menu Faturamento &gt; Emissor de NF-e &gt; Configurações Fiscais &gt; Acessar Configurações &gt; Regras Tributárias &gt; Baixar</strong>.</p>
+      </div>
+      <div class="step">
+        <p class="k">Passo 2</p>
+        <h3>Converta o arquivo aqui</h3>
+        <p class="d">Envie o arquivo .xlsx no botão do topo da página. Em poucos segundos aparece o botão <strong>Baixar planilha</strong>, já no modelo do Full Shopee.</p>
+      </div>
+      <div class="step">
+        <p class="k">Passo 3</p>
+        <h3>Importe na Central do Vendedor</h3>
+        <p class="d">Preencha Origem Fiscal e CFOP na planilha baixada, valide com a sua contabilidade e suba na Shopee em <strong class="ph">Perfil da Loja &gt; Configurações da NFe | Full &gt; Informação da Loja &gt; Editar</strong>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
     <p>Deu algo errado? <button type="button" class="linkish" id="openReport">Reportar um erro</button></p>
-
-    <section class="hidden" id="report">
-      <form id="reportForm" novalidate>
-        <label for="reason">O que aconteceu</label>
-        <select id="reason" name="Motivo" required>
-          <option value="">Selecione</option>
-          <option>O arquivo não converteu</option>
-          <option>Converteu, mas não subiu na Central do Vendedor</option>
-          <option>A planilha convertida tem dados errados</option>
-          <option>Outro</option>
-        </select>
-
-        <label for="email">Seu e-mail</label>
-        <input type="email" id="email" name="E-mail do seller" required placeholder="voce@empresa.com.br">
-
-        <label for="details">Detalhes (opcional)</label>
-        <textarea id="details" name="Detalhes" placeholder="Se a Central do Vendedor mostrou uma mensagem de erro, cole aqui."></textarea>
-
-        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" aria-hidden="true">
-
-        <p class="status" id="reportStatus" role="status"></p>
-        <button type="submit" class="btn" id="reportSend">Enviar relato</button>
-        <button type="button" class="btn quiet" id="closeReport">Cancelar</button>
-      </form>
-      <p class="privacy" style="margin:14px 0 0">Usamos seu e-mail apenas para responder sobre este relato. Sua planilha não é anexada nem enviada.</p>
-    </section>
+    <p class="fine">Gratuito, sem cadastro. Até 500 regras por arquivo.</p>
   </div>
 
-</main>
+  <section class="hidden" id="report">
+    <form id="reportForm" novalidate>
+      <label for="reason">O que aconteceu:</label>
+      <select id="reason" name="Motivo" required>
+        <option value="">Selecione</option>
+        <option>O arquivo não converteu</option>
+        <option>Converteu, mas não subiu na Central do Vendedor</option>
+        <option>A planilha convertida tem dados errados</option>
+        <option>Outro</option>
+      </select>
+
+      <label for="email">Seu e-mail:</label>
+      <input type="email" id="email" name="E-mail do seller" required placeholder="voce@empresa.com.br">
+
+      <label for="shopid">ShopId ou link da loja:</label>
+      <input type="text" id="shopid" name="ShopId ou link da loja">
+
+      <label for="details">Detalhes (opcional):</label>
+      <textarea id="details" name="Detalhes"></textarea>
+
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" aria-hidden="true">
+
+      <p class="status" id="reportStatus" role="status"></p>
+      <button type="submit" class="btn" id="reportSend">Enviar relato</button>
+      <button type="button" class="btn quiet" id="closeReport">Cancelar</button>
+    </form>
+    <p class="report-privacy">Responderemos seu relato por e-mail, ou um especialista Shopee entrará em contato.</p>
+  </section>
+</footer>
 
 <script src="jszip.min.js"></script>
 <script src="converter.js"></script>

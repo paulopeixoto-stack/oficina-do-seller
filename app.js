@@ -8,7 +8,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var drop = $('drop'), file = $('file'), bar = $('bar');
   var err = $('err'), errMsg = $('errMsg');
-  var done = $('done'), doneMeta = $('doneMeta'), dl = $('dl'), dropTitle = $('dropTitle');
+  var done = $('done'), dl = $('dl'), dropTitle = $('dropTitle');
   var lastUrl = null, templateBytes = null, busy = false;
 
   function show(el, on) { el.classList[on ? 'remove' : 'add']('hidden'); }
@@ -19,7 +19,7 @@
     show(bar, false);
     errMsg.textContent = message;
     show(err, true);
-    dropTitle.textContent = 'Arraste a planilha do Mercado Livre';
+    dropTitle.textContent = 'Selecionar planilha do Mercado Livre';
   }
 
   function loadTemplate() {
@@ -69,12 +69,6 @@
         lastUrl = URL.createObjectURL(blob);
         dl.href = lastUrl;
         dl.download = 'SHOPEE_Regras_Fiscais_from_' + f.name.replace(/\.xlsx$/i, '') + '.xlsx';
-
-        var bits = [res.rules + (res.rules === 1 ? ' regra' : ' regras'), res.rows + ' linhas'];
-        if (res.dropped) {
-          bits.push(res.dropped + (res.dropped === 1 ? ' regra repetida foi unificada' : ' regras repetidas foram unificadas'));
-        }
-        doneMeta.textContent = bits.join(' · ');
 
         busy = false;
         drop.classList.remove('busy');
@@ -134,6 +128,7 @@
       from_name: 'Conversor de regras tributárias',
       'Motivo': $('reason').value,
       'E-mail do seller': $('email').value,
+      'ShopId ou link da loja': $('shopid').value || '(não informado)',
       'Detalhes': $('details').value || '(sem detalhes)',
       'Navegador': navigator.userAgent,
       botcheck: false
