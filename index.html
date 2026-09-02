@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regras tributárias: Mercado Livre para Shopee</title>
+<meta name="description" content="Converta a planilha de regras tributárias do Mercado Livre para o template da Shopee. O arquivo é processado no seu navegador.">
+<style>
+  :root{
+    --ink:#16233a; --ink-soft:#4a5769; --ink-faint:#8590a0;
+    --paper:#ffffff; --surface:#f2f5f8; --line:#dce3ec;
+    --accent:#1a6a66; --accent-deep:#12504d;
+    --note-bg:#fbf4e4; --note-ink:#7a5410; --note-line:#e6d3a8;
+    --bad-bg:#fdf1f0; --bad-ink:#8f2d24; --bad-line:#eccdc9;
+    --radius:3px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--surface); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16px; line-height:1.55;
+  }
+  .wrap{max-width:660px; margin:0 auto; padding:56px 24px 80px}
+  h1{
+    font-size:1.6rem; line-height:1.25; font-weight:640;
+    letter-spacing:-.017em; margin:0 0 10px;
+  }
+  h1 .arrow{color:var(--ink-faint); font-weight:400}
+  .lede{margin:0 0 6px; color:var(--ink-soft); max-width:52ch}
+  .privacy{margin:0 0 34px; color:var(--ink-faint); font-size:.875rem; max-width:52ch}
+
+  /* O herói é a própria folha de planilha. */
+  .sheet{
+    position:relative; display:block; width:100%; border:0; padding:0;
+    background:var(--paper); border-radius:var(--radius);
+    box-shadow:0 1px 0 var(--line), 0 1px 14px rgba(22,35,58,.06);
+    cursor:pointer; text-align:left; font:inherit; color:inherit;
+    overflow:hidden; transition:box-shadow .18s ease, transform .18s ease;
+  }
+  .sheet::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0/25% 100%,
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 0/100% 34px;
+    opacity:.5;
+  }
+  .sheet::after{
+    content:""; position:absolute; left:0; right:0; top:0; height:34px;
+    background:var(--surface); border-bottom:1px solid var(--line); pointer-events:none;
+  }
+  .sheet:hover{box-shadow:0 1px 0 var(--line), 0 3px 20px rgba(22,35,58,.10)}
+  .sheet:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+  .sheet.drag{box-shadow:0 0 0 2px var(--accent), 0 6px 24px rgba(22,35,58,.12); transform:translateY(-1px)}
+  .sheet.busy{cursor:progress}
+  .sheet-inner{position:relative; z-index:1; padding:74px 28px 52px; text-align:center}
+  .sheet-title{font-weight:600; font-size:1.06rem; margin:0 0 4px}
+  .sheet-hint{margin:0; color:var(--ink-faint); font-size:.875rem}
+  input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+  .bar{height:2px; background:var(--line); border-radius:2px; overflow:hidden; margin:18px 0 0}
+  .bar i{display:block; height:100%; width:35%; background:var(--accent); animation:slide 1.1s ease-in-out infinite}
+  @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(385%)}}
+  @media (prefers-reduced-motion:reduce){.bar i{animation:none;width:100%}}
+
+  .panel{
+    margin:22px 0 0; background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px 24px;
+  }
+  .panel h2{font-size:1.06rem; font-weight:620; margin:0 0 3px}
+  .meta{color:var(--ink-faint); font-size:.875rem; margin:0 0 18px}
+  .btn{
+    display:inline-block; background:var(--accent); color:#fff; border:0;
+    padding:11px 20px; border-radius:var(--radius); font:inherit; font-weight:560;
+    cursor:pointer; text-decoration:none;
+  }
+  .btn:hover{background:var(--accent-deep)}
+  .btn:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+  .btn.quiet{background:transparent; color:var(--accent); padding:11px 0; font-weight:520}
+  .btn.quiet:hover{background:transparent; text-decoration:underline}
+
+  .note{
+    margin:18px 0 0; background:var(--note-bg); border:1px solid var(--note-line);
+    border-radius:var(--radius); padding:16px 18px; color:var(--note-ink); font-size:.9375rem;
+  }
+  .note p{margin:0 0 8px; font-weight:600}
+  .note ul{margin:0; padding-left:18px}
+  .note li{margin:0 0 4px}
+  .note li:last-child{margin:0}
+  .note em{font-style:normal; font-weight:600}
+
+  .error{
+    margin:22px 0 0; background:var(--bad-bg); border:1px solid var(--bad-line);
+    border-radius:var(--radius); padding:16px 18px; color:var(--bad-ink); font-size:.9375rem;
+  }
+  .error p{margin:0}
+
+  .foot{margin:44px 0 0; padding-top:22px; border-top:1px solid var(--line)}
+  .foot p{margin:0; color:var(--ink-faint); font-size:.875rem}
+  .linkish{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline}
+
+  form label{display:block; font-size:.875rem; font-weight:560; margin:14px 0 5px}
+  select,input[type=email],textarea{
+    width:100%; font:inherit; color:var(--ink); background:var(--paper);
+    border:1px solid var(--line); border-radius:var(--radius); padding:9px 10px;
+  }
+  select:focus,input:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent)}
+  textarea{resize:vertical; min-height:76px}
+  .hp{display:none !important}
+  .hidden{display:none}
+  .status{margin:14px 0 0; font-size:.9375rem}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <h1>Regras tributárias<br><span class="arrow">Mercado Livre para Shopee</span></h1>
+  <p class="lede">Envie a planilha de regras tributárias exportada do Mercado Livre e baixe a versão pronta para o template da Shopee.</p>
+  <p class="privacy">A conversão acontece dentro do seu navegador. A planilha não é enviada para nenhum servidor e ninguém além de você tem acesso a ela.</p>
+
+  <button type="button" class="sheet" id="drop" aria-describedby="hint">
+    <span class="sheet-inner">
+      <span class="sheet-title" id="dropTitle">Arraste a planilha do Mercado Livre</span>
+      <span class="sheet-hint" id="hint">ou clique para escolher — arquivo .xlsx</span>
+    </span>
+  </button>
+  <input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+  <div class="bar hidden" id="bar" aria-hidden="true"><i></i></div>
+
+  <div class="error hidden" id="err" role="alert"><p id="errMsg"></p></div>
+
+  <section class="panel hidden" id="done" aria-live="polite">
+    <h2>Planilha convertida</h2>
+    <p class="meta" id="doneMeta"></p>
+    <a class="btn" id="dl" href="#" download>Baixar planilha</a>
+
+    <div class="note">
+      <p>Preencha na planilha antes de importar</p>
+      <ul>
+        <li><em>Origem Fiscal</em> — uma por regra, escolhendo no menu da célula: SP, PE, MG, GO, BA ou RS.</li>
+        <li><em>CFOP Mesmo Estado</em> e <em>CFOP Estados diferentes</em> — nas linhas de Venda, onde está escrito PREENCHER.</li>
+        <li>Valide a planilha com a sua contabilidade antes de subir na Central do Vendedor.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p>Deu algo errado? <button type="button" class="linkish" id="openReport">Reportar um erro</button></p>
+
+    <section class="hidden" id="report">
+      <form id="reportForm" novalidate>
+        <label for="reason">O que aconteceu</label>
+        <select id="reason" name="Motivo" required>
+          <option value="">Selecione</option>
+          <option>O arquivo não converteu</option>
+          <option>Converteu, mas não subiu na Central do Vendedor</option>
+          <option>A planilha convertida tem dados errados</option>
+          <option>Outro</option>
+        </select>
+
+        <label for="email">Seu e-mail</label>
+        <input type="email" id="email" name="E-mail do seller" required placeholder="voce@empresa.com.br">
+
+        <label for="details">Detalhes (opcional)</label>
+        <textarea id="details" name="Detalhes" placeholder="Se a Central do Vendedor mostrou uma mensagem de erro, cole aqui."></textarea>
+
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" aria-hidden="true">
+
+        <p class="status" id="reportStatus" role="status"></p>
+        <button type="submit" class="btn" id="reportSend">Enviar relato</button>
+        <button type="button" class="btn quiet" id="closeReport">Cancelar</button>
+      </form>
+      <p class="privacy" style="margin:14px 0 0">Usamos seu e-mail apenas para responder sobre este relato. Sua planilha não é anexada nem enviada.</p>
+    </section>
+  </div>
+
+</main>
+
+<script src="jszip.min.js"></script>
+<script src="converter.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
