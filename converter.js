@@ -169,19 +169,26 @@
       if (!(k in code2col)) throw new Error('A coluna ' + k + ' não existe na planilha do Mercado Livre.');
     });
 
-    var rules = [], seen = {};
+    var rules = [], seen = {}, last = null;
     Object.keys(rows).map(Number).sort(function (a, b) { return a - b; }).forEach(function (r) {
       if (r < hdr + 2) return;
       var row = rows[r];
       var rid = String(row[code2col.RULE_ID] || '').trim();
-      if (!rid) return;
-      var origin = String(row[code2col.ORIGIN] || '').trim();
-      var key = rid + '||' + origin;
-      if (!(key in seen)) {
-        seen[key] = rules.length;
-        rules.push({ ruleId: rid, origin: origin, name: row[code2col.RULE_NAME] || '', tx: {} });
+      if (rid) {
+        var origin = String(row[code2col.ORIGIN] || '').trim();
+        var key = rid + '||' + origin;
+        if (!(key in seen)) {
+          seen[key] = rules.length;
+          rules.push({ ruleId: rid, origin: origin, name: row[code2col.RULE_NAME] || '', tx: {} });
+        }
+        last = seen[key];
+        rules[last].tx[norm(row[code2col.TRANSACTION_TYPE])] = row;
+        return;
       }
-      rules[seen[key]].tx[norm(row[code2col.TRANSACTION_TYPE])] = row;
+      // Célula mesclada: RULE_ID só na primeira linha do bloco. Linha sem RULE_ID
+      // mas com tipo de transação pertence à regra imediatamente acima.
+      var tx = norm(row[code2col.TRANSACTION_TYPE]);
+      if (last !== null && tx) rules[last].tx[tx] = row;
     });
 
     // A Shopee recusa duas regras com o mesmo nome. Quando o ML repete a regra
